@@ -17,7 +17,7 @@ pipeline {
 		    anyOf{ branch "master" ; branch 'release' }
 	    }
             steps {
-               sh 'zip -r sbdl.zip lib'
+               sh 'python -m zipfile -c sbdl.zip lib'
             }
         }
 	stage('Release') {
