@@ -16,6 +16,8 @@ if __name__ == '__main__':
     logger = Log4j2(spark)
 
     logger.info("Finished creating Spark Session")
+    logger.info("dummy Message for new branch")
+	
 
 
 
