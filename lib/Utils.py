@@ -8,9 +8,7 @@ def get_spark_session(env):
     if env == "LOCAL":
         return SparkSession.builder \
             .master("local[2]") \
-            .enableHiveSupport() \
             .config("spark.driver.extraJavaOptions", "-Dlog4j2.configurationFile=file:log4j2.properties") \
-            .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.13:4.2.0") \
             .getOrCreate()
     else:
         return SparkSession.builder \
