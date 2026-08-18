@@ -4,4 +4,4 @@
 lib/__pycache__/*
 lib/DataGen.py
 SBDL/ca.pem
-
+SBDL/conf/secret.conf
