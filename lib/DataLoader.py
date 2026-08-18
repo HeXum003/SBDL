@@ -19,33 +19,40 @@ def get_address_data_schema():
     return schema
 
 def read_accounts(spark, env):
-    runtime_filter = Configloader.get_data_filter(env, "accounts_filter")
+    runtime_filter = Configloader.get_data_filter(env, "account.filter")
 
-    return (
+    df = (
         spark.read.format("csv")
         .option("header", "true")
         .schema(get_accounts_data_schema())
         .load("test_data/accounts/account_samples.csv")
-        .  where(runtime_filter)
     )
+    if isinstance(runtime_filter, str) and runtime_filter.strip() and runtime_filter.strip().lower() != "true":
+        df = df.where(runtime_filter)
+    return df
 
 def read_parties(spark, env):
-    runtime_filter = Configloader.get_data_filter(env, "parties_filter")
+    runtime_filter = Configloader.get_data_filter(env, "party.filter")
 
-    return (
+    df = (
         spark.read.format("csv")
-        .options("header", "true")
+        .option("header", "true")
         .schema(get_parties_data_schema())
-        .lead("test_data/parties/party_samples.csv")
+        .load("test_data/parties/party_samples.csv")
     )
+    if isinstance(runtime_filter, str) and runtime_filter.strip() and runtime_filter.strip().lower() != "true":
+        df = df.where(runtime_filter)
+    return df
 
 def read_address(spark, env):
-    runtime_filter = Configloader.get_data_filter(env, "address_filter")
+    runtime_filter = Configloader.get_data_filter(env, "address.filter")
 
-    return (
+    df = (
         spark.read.format("csv")
         .option("header", "true")
         .schema(get_address_data_schema())
-        .lead("test_data/party_address/address_samples.csv")
+        .load("test_data/party_address/address_samples.csv")
     )
-
+    if isinstance(runtime_filter, str) and runtime_filter.strip() and runtime_filter.strip().lower() != "true":
+        df = df.where(runtime_filter)
+    return df

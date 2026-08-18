@@ -1,7 +1,7 @@
 import sys
-
-from lib import Utils, DataLoader, Configloader
+from lib import Utils, Configloader, Transformation
 from lib.logger import Log4j2
+from pyspark.sql.functions import col, struct, to_json
 
 if __name__ == '__main__':
 
@@ -9,14 +9,10 @@ if __name__ == '__main__':
         print("Usage: sbdl {local, qa, prod} {load_date} : Arguments are missing")
         sys.exit(-1)
 
-    job_run_env = sys.argv[1].upper()
-    load_date = sys.argv[2]
-
-    spark = Utils.get_spark_session(job_run_env)
-    logger = Log4j2(spark)
-
-    logger.info("Finished creating Spark Session")
-    logger.info("dummy Message for new branch")
-
-
-
+    else:
+        env_name = sys.argv[1].upper()
+        load_date_in = sys.argv[2]
+        spark = Utils.get_spark_session(env_name)
+        log = Log4j2(spark)
+        conf = Configloader.get_config(env_name)
+        final_df = Transformation.transformations(spark, env_name)
