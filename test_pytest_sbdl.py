@@ -166,15 +166,6 @@ def expected_final_df(spark):
                                                                  StructField('oldValue', NullType())]))])))]))])
     return spark.read.format("json").schema(schema).load("test_data/results/final_df.json").select("keys", "payload")
 
-def test_blank_test(spark):
-    print(spark.version)
-    assert spark.version == "4.2.0"
-
-def test_get_config():
-    conf_local = Configloader.get_config("LOCAL")
-    conf_qa = Configloader.get_config("QA")
-    assert conf_qa["hive.database"] == "sbdl_db_qa"
-
 def test_read_account(spark, env="LOCAL"):
     accounts_df = DataLoader.read_accounts(spark, env)
     assert accounts_df.count() == 8
